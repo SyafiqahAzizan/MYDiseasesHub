@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYDiseases Hub</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/lgq.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    body {
+      color: #fff;
+      font-family: "Open Sans", sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #container {
+      border: 1px solid #333;
+      padding: 20px;
+      margin: auto;
+      max-width: 600px;
+      background-color: rgba(109, 211, 214, 0.8);
+    }
+
+    h4 {
+      color: #333;
+    }
+
+    #googleLinkSection {
+      display: none;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    #generatedLink {
+      margin-top: 10px;
+      color:blue
+    }
+
+    #historySection {
+      margin-top: 20px;
+      color: black;
+    }
+
+    #historyList {
+      list-style: none;
+      padding: 0;
+      color: blue;
+    }
+
+    #historyTitle {
+      text-align: left; /* Align the title to the left */
+      margin-bottom: 10px; /* Add some space below the title */
+    }
+
+    #historyList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #historyList a {
+      color: red;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    #goBackButton {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 35px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size:15px;
+    }
+
+    #generateLinkButton {
+        background: #3fc05f;
+        border: 0;
+        padding: 10px 35px;
+        color: #fff;
+        transition: 0.4s;
+        border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .delete-link {
+      margin-left: 10px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-center justify-content-md-between">
+      <div class="align-items-center d-none d-md-flex"></div>
+      <div class="d-flex align-items-center"></div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <div id="container">
+   <strong><h4>Enter Disease Name:</h4></strong> 
+    <input type="text" id="diseaseNameInput">
+    <button id="generateLinkButton" onclick="generateGoogleLink()">Generate Google Link</button>
+
+    <div id="googleLinkSection">
+      <h5>Google Link:</h5>
+      <div id="generatedLink" style="color: blue;"></div>
+    </div>
+
+    <div id="historySection">
+      <h5 id="historyTitle">Search History:</h5>
+      <ul id="historyList"></ul>
+    </div>
+
+    <button id="goBackButton" onclick="goBack()">Go Back to Home Page</button>
+  </div>
+
+  <script>
+    function generateGoogleLink() {
+      var diseaseName = document.getElementById('diseaseNameInput').value;
+      if (diseaseName) {
+        var googleLink = "https://www.google.com/search?q=" + encodeURIComponent(diseaseName);
+
+        // Create a clickable link
+        var linkElement = document.createElement('a');
+        linkElement.href = googleLink;
+        linkElement.target = '_blank'; // Open in a new tab
+        linkElement.textContent = "Click here to learn more about '" + diseaseName + "'";
+        linkElement.style.color = 'blue';
+
+
+        // Display the link
+        var generatedLinkDiv = document.getElementById('generatedLink');
+        generatedLinkDiv.innerHTML = ''; // Clear previous content
+        generatedLinkDiv.appendChild(linkElement);
+
+        // Show the section
+        document.getElementById('googleLinkSection').style.display = 'block';
+
+        // Update search history
+        updateHistory(diseaseName);
+      } else {
+        alert("Please enter a disease name.");
+      }
+    }
+
+    function updateHistory(diseaseName) {
+      // Retrieve existing history from local storage
+      var history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+      // Add the current search to the history
+      history.push(diseaseName);
+
+      // Save updated history to local storage
+      localStorage.setItem('searchHistory', JSON.stringify(history));
+
+      // Update the displayed history
+      displayHistory();
+    }
+
+    function displayHistory() {
+      var historyList = document.getElementById('historyList');
+      historyList.innerHTML = ''; // Clear previous content
+
+      // Retrieve history from local storage
+      var history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+      // Display the history
+      history.forEach(function(item) {
+        var listItem = document.createElement('li');
+        listItem.textContent = item;
+
+        // Add a link to delete the search history item
+        var deleteLink = document.createElement('a');
+        deleteLink.href = '#';
+        deleteLink.className = 'delete-link';
+        deleteLink.textContent = 'Delete';
+        deleteLink.onclick = function() {
+          deleteHistoryItem(item);
+        };
+
+        listItem.appendChild(deleteLink);
+        historyList.appendChild(listItem);
+      });
+    }
+
+    function deleteHistoryItem(item) {
+      // Retrieve existing history from local storage
+      var history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+      // Remove the selected item from history
+      history = history.filter(function(search) {
+        return search !== item;
+      });
+
+      // Save updated history to local storage
+      localStorage.setItem('searchHistory', JSON.stringify(history));
+
+      // Update the displayed history
+      displayHistory();
+    }
+
+    function goBack() {
+      window.location.href = 'index.php';
+    }
+
+    // Display initial history on page load
+    displayHistory();
+  </script>
+</body>
+</html>

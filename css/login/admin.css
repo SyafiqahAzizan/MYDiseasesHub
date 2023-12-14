@@ -1,0 +1,85 @@
+
+		@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css";
+body{
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+}
+
+.loginbox{
+	width: 380px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	color: white;
+	background: #053f61e8;
+	padding: 30px; 
+
+}
+
+.loginbox h1{
+	float: left;
+	font-size: 38px;
+	border-bottom: 6px solid #0cac69;
+	margin-bottom: 50px;
+	padding: 13px 0;
+	margin-left: 70px;
+
+}
+.textbox{
+	width: 100%;
+	overflow: hidden;
+	font-size: 20px;
+	padding: 8px 0;
+	margin: 8px 0;
+	border-bottom: 3px solid #0cac69;
+}
+
+.textbox i{
+	width: 26px;
+	float: left;
+	text-align: center;
+}
+
+.textbox input{
+	border: none;
+	outline: none;
+	background: none;
+	color: white;
+	width: 80%;
+	float: left;
+	margin: 0 10px;
+	font-size: 25px;
+}
+
+.btn{
+	width: 100%;
+	background-color: rgb(8, 103, 192);
+	border: 2px solid #000805;
+	color: white;
+	padding: 5px;
+	font-size: 25px;
+	cursor: pointer;
+	margin: 12px 0;
+}
+
+.btn:hover{
+	background-color: #007451;
+	transition: 0.6s ease;
+}
+
+.regnow{
+	text-align: center;
+}
+
+.regnow:link a{
+	color: #835C3B;
+}
+
+.regnow:hover a{
+	color: #f8faf9;
+}
